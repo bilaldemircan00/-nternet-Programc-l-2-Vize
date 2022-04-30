@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DB01Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="cevaplar">
+    <Key>
+      <PropertyRef Name="cevap_id" />
+    </Key>
+    <Property Name="cevap_id" Type="Int32" Nullable="false" />
+    <Property Name="cevap" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="uye_id" Type="Int32" Nullable="false" />
+    <Property Name="soru_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="sorular" Relationship="Self.FK_cevaplar_ToSorular" FromRole="cevaplar" ToRole="sorular" />
+    <NavigationProperty Name="uyeler" Relationship="Self.FK_cevaplar_ToTableUyeler" FromRole="cevaplar" ToRole="uyeler" />
+    <NavigationProperty Name="sorular1" Relationship="Self.FK_sorular_ToTableCevaplar" FromRole="cevaplar" ToRole="sorular" />
+  </EntityType>
+  <EntityType Name="kategoriler">
+    <Key>
+      <PropertyRef Name="kategori_id" />
+    </Key>
+    <Property Name="kategori_id" Type="Int32" Nullable="false" />
+    <Property Name="karegori_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="sorular" Relationship="Self.FK_sorular_ToKategoriler" FromRole="kategoriler" ToRole="sorular" />
+  </EntityType>
+  <EntityType Name="sorular">
+    <Key>
+      <PropertyRef Name="soru_id" />
+    </Key>
+    <Property Name="soru_id" Type="Int32" Nullable="false" />
+    <Property Name="soru" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="uye_id" Type="Int32" Nullable="false" />
+    <Property Name="kategori_id" Type="Int32" Nullable="false" />
+    <Property Name="cevap_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="cevaplar" Relationship="Self.FK_cevaplar_ToSorular" FromRole="sorular" ToRole="cevaplar" />
+    <NavigationProperty Name="cevaplar1" Relationship="Self.FK_sorular_ToTableCevaplar" FromRole="sorular" ToRole="cevaplar" />
+    <NavigationProperty Name="kategoriler" Relationship="Self.FK_sorular_ToKategoriler" FromRole="sorular" ToRole="kategoriler" />
+    <NavigationProperty Name="uyeler" Relationship="Self.FK_sorular_ToTableUyeler" FromRole="sorular" ToRole="uyeler" />
+  </EntityType>
+  <EntityType Name="uyeler">
+    <Key>
+      <PropertyRef Name="uye_id" />
+    </Key>
+    <Property Name="uye_id" Type="Int32" Nullable="false" />
+    <Property Name="uye_ad_soyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="uye_mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="uye_cinsiyet" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="uye_dogum_tarihi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="uye_kullanici_adi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="uye_parola" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="uye_yetki" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="cevaplar" Relationship="Self.FK_cevaplar_ToTableUyeler" FromRole="uyeler" ToRole="cevaplar" />
+    <NavigationProperty Name="sorular" Relationship="Self.FK_sorular_ToTableUyeler" FromRole="uyeler" ToRole="sorular" />
+  </EntityType>
+  <Association Name="FK_cevaplar_ToSorular">
+    <End Role="sorular" Type="Self.sorular" Multiplicity="1" />
+    <End Role="cevaplar" Type="Self.cevaplar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="sorular">
+        <PropertyRef Name="soru_id" />
+      </Principal>
+      <Dependent Role="cevaplar">
+        <PropertyRef Name="soru_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_cevaplar_ToTableUyeler">
+    <End Role="uyeler" Type="Self.uyeler" Multiplicity="1" />
+    <End Role="cevaplar" Type="Self.cevaplar" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="uyeler">
+        <PropertyRef Name="uye_id" />
+      </Principal>
+      <Dependent Role="cevaplar">
+        <PropertyRef Name="uye_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_sorular_ToTableCevaplar">
+    <End Role="cevaplar" Type="Self.cevaplar" Multiplicity="1" />
+    <End Role="sorular" Type="Self.sorular" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="cevaplar">
+        <PropertyRef Name="cevap_id" />
+      </Principal>
+      <Dependent Role="sorular">
+        <PropertyRef Name="cevap_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_sorular_ToKategoriler">
+    <End Role="kategoriler" Type="Self.kategoriler" Multiplicity="1" />
+    <End Role="sorular" Type="Self.sorular" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="kategoriler">
+        <PropertyRef Name="kategori_id" />
+      </Principal>
+      <Dependent Role="sorular">
+        <PropertyRef Name="kategori_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_sorular_ToTableUyeler">
+    <End Role="uyeler" Type="Self.uyeler" Multiplicity="1" />
+    <End Role="sorular" Type="Self.sorular" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="uyeler">
+        <PropertyRef Name="uye_id" />
+      </Principal>
+      <Dependent Role="sorular">
+        <PropertyRef Name="uye_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DB01Entities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="cevaplar" EntityType="Self.cevaplar" />
+    <EntitySet Name="kategoriler" EntityType="Self.kategoriler" />
+    <EntitySet Name="sorular" EntityType="Self.sorular" />
+    <EntitySet Name="uyeler" EntityType="Self.uyeler" />
+    <AssociationSet Name="FK_cevaplar_ToSorular" Association="Self.FK_cevaplar_ToSorular">
+      <End Role="sorular" EntitySet="sorular" />
+      <End Role="cevaplar" EntitySet="cevaplar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_cevaplar_ToTableUyeler" Association="Self.FK_cevaplar_ToTableUyeler">
+      <End Role="uyeler" EntitySet="uyeler" />
+      <End Role="cevaplar" EntitySet="cevaplar" />
+    </AssociationSet>
+    <AssociationSet Name="FK_sorular_ToTableCevaplar" Association="Self.FK_sorular_ToTableCevaplar">
+      <End Role="cevaplar" EntitySet="cevaplar" />
+      <End Role="sorular" EntitySet="sorular" />
+    </AssociationSet>
+    <AssociationSet Name="FK_sorular_ToKategoriler" Association="Self.FK_sorular_ToKategoriler">
+      <End Role="kategoriler" EntitySet="kategoriler" />
+      <End Role="sorular" EntitySet="sorular" />
+    </AssociationSet>
+    <AssociationSet Name="FK_sorular_ToTableUyeler" Association="Self.FK_sorular_ToTableUyeler">
+      <End Role="uyeler" EntitySet="uyeler" />
+      <End Role="sorular" EntitySet="sorular" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
